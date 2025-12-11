@@ -774,14 +774,14 @@ class TestEnhanceYamlAgentShim:
     def test_yaml_agent_shim_generated_for_agent_engine(
         self, tmp_path: pathlib.Path
     ) -> None:
-        """Test that agent.py shim is generated when root_agent.yaml exists."""
+        """Test that agent.py shim is generated when research_agent.yaml exists."""
         runner = CliRunner()
 
         with runner.isolated_filesystem(temp_dir=tmp_path):
-            # Create agent directory with root_agent.yaml (no agent.py)
+            # Create agent directory with research_agent.yaml (no agent.py)
             agent_dir = pathlib.Path("app")
             agent_dir.mkdir()
-            yaml_file = agent_dir / "root_agent.yaml"
+            yaml_file = agent_dir / "research_agent.yaml"
 
             yaml_content = """name: test_agent
 model: gemini-2.0-flash-001
@@ -818,7 +818,7 @@ instruction: You are a helpful assistant.
             assert "config_agent_utils" in content, (
                 f"Expected config_agent_utils import in agent.py but got:\n{content}"
             )
-            assert 'from_config(str(_AGENT_DIR / "root_agent.yaml"))' in content, (
+            assert 'from_config(str(_AGENT_DIR / "research_agent.yaml"))' in content, (
                 f"Expected from_config call in agent.py but got:\n{content}"
             )
             assert "root_agent = " in content, (
@@ -831,10 +831,10 @@ instruction: You are a helpful assistant.
                 f"Expected App name='app' (matching agent directory) but got:\n{content}"
             )
 
-            # Verify root_agent.yaml was preserved
+            # Verify research_agent.yaml was preserved
             preserved_yaml = yaml_file.read_text()
             assert preserved_yaml == yaml_content, (
-                f"root_agent.yaml was modified! Expected:\n{yaml_content}\n\nGot:\n{preserved_yaml}"
+                f"research_agent.yaml was modified! Expected:\n{yaml_content}\n\nGot:\n{preserved_yaml}"
             )
 
             # Verify the generated shim is valid Python syntax
@@ -847,10 +847,10 @@ instruction: You are a helpful assistant.
         runner = CliRunner()
 
         with runner.isolated_filesystem(temp_dir=tmp_path):
-            # Create agent directory with root_agent.yaml
+            # Create agent directory with research_agent.yaml
             agent_dir = pathlib.Path("app")
             agent_dir.mkdir()
-            yaml_file = agent_dir / "root_agent.yaml"
+            yaml_file = agent_dir / "research_agent.yaml"
 
             yaml_content = """name: test_agent
 model: gemini-2.0-flash-001
@@ -887,7 +887,7 @@ instruction: You are a helpful assistant.
             assert "config_agent_utils" in content, (
                 f"Expected config_agent_utils import in agent.py but got:\n{content}"
             )
-            assert 'from_config(str(_AGENT_DIR / "root_agent.yaml"))' in content, (
+            assert 'from_config(str(_AGENT_DIR / "research_agent.yaml"))' in content, (
                 f"Expected from_config call in agent.py but got:\n{content}"
             )
 
@@ -896,10 +896,10 @@ instruction: You are a helpful assistant.
         runner = CliRunner()
 
         with runner.isolated_filesystem(temp_dir=tmp_path):
-            # Create custom agent directory with root_agent.yaml
+            # Create custom agent directory with research_agent.yaml
             agent_dir = pathlib.Path("my_agent")
             agent_dir.mkdir()
-            yaml_file = agent_dir / "root_agent.yaml"
+            yaml_file = agent_dir / "research_agent.yaml"
 
             yaml_content = """name: custom_agent
 model: gemini-2.0-flash-001
@@ -943,10 +943,10 @@ model: gemini-2.0-flash-001
         runner = CliRunner()
 
         with runner.isolated_filesystem(temp_dir=tmp_path):
-            # Create agent directory with root_agent.yaml
+            # Create agent directory with research_agent.yaml
             agent_dir = pathlib.Path("app")
             agent_dir.mkdir()
-            yaml_file = agent_dir / "root_agent.yaml"
+            yaml_file = agent_dir / "research_agent.yaml"
             yaml_file.write_text("name: test_agent\n")
 
             # Run enhance
@@ -964,7 +964,7 @@ model: gemini-2.0-flash-001
             )
 
             # Verify the YAML detection message was shown
-            assert "root_agent.yaml" in result.output, (
+            assert "research_agent.yaml" in result.output, (
                 f"Expected YAML detection message in output:\n{result.output}"
             )
             assert "YAML config agent" in result.output, (
@@ -978,10 +978,10 @@ model: gemini-2.0-flash-001
         runner = CliRunner()
 
         with runner.isolated_filesystem(temp_dir=tmp_path):
-            # Create agent directory with root_agent.yaml
+            # Create agent directory with research_agent.yaml
             agent_dir = pathlib.Path("app")
             agent_dir.mkdir()
-            yaml_file = agent_dir / "root_agent.yaml"
+            yaml_file = agent_dir / "research_agent.yaml"
             yaml_file.write_text("name: yaml_agent\nmodel: gemini-2.0-flash-001\n")
 
             # Run enhance - base template will copy its agent.py first,
@@ -1011,8 +1011,8 @@ model: gemini-2.0-flash-001
             assert "config_agent_utils" in content, (
                 "agent.py should contain YAML shim, not base template content"
             )
-            assert 'from_config(str(_AGENT_DIR / "root_agent.yaml"))' in content, (
-                "agent.py should load from root_agent.yaml"
+            assert 'from_config(str(_AGENT_DIR / "research_agent.yaml"))' in content, (
+                "agent.py should load from research_agent.yaml"
             )
 
             # Should NOT have the base template's get_weather function

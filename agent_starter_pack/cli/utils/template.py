@@ -688,7 +688,7 @@ def _generate_yaml_agent_shim(
 ) -> None:
     """Generate agent.py shim for YAML config agents.
 
-    When a root_agent.yaml is detected, this function generates an agent.py
+    When a research_agent.yaml is detected, this function generates an agent.py
     that loads the YAML config and exposes the root_agent and app objects
     required by the deployment pipeline.
 
@@ -697,9 +697,9 @@ def _generate_yaml_agent_shim(
         agent_directory: Name of the agent directory for logging
         console: Rich console for user feedback
         force: If True, overwrite existing agent.py even if it has root_agent defined.
-               Used when the user explicitly has a root_agent.yaml.
+               Used when the user explicitly has a research_agent.yaml.
     """
-    root_agent_yaml = agent_py_path.parent / "root_agent.yaml"
+    root_agent_yaml = agent_py_path.parent / "research_agent.yaml"
 
     if not root_agent_yaml.exists():
         return
@@ -724,7 +724,7 @@ def _generate_yaml_agent_shim(
     shim_content = f'''"""Agent module that loads the YAML config agent.
 
 This file is auto-generated to provide compatibility with the deployment pipeline.
-Edit root_agent.yaml to modify your agent configuration.
+Edit research_agent.yaml to modify your agent configuration.
 """
 
 from pathlib import Path
@@ -733,7 +733,7 @@ from google.adk.agents import config_agent_utils
 from google.adk.apps.app import App
 
 _AGENT_DIR = Path(__file__).parent
-root_agent = config_agent_utils.from_config(str(_AGENT_DIR / "root_agent.yaml"))
+root_agent = config_agent_utils.from_config(str(_AGENT_DIR / "research_agent.yaml"))
 app = App(root_agent=root_agent, name="{agent_directory}")
 '''
 
@@ -1166,7 +1166,7 @@ def process_template(
                 is_adk = "adk" in tags
                 agent_py_path = generated_project_dir / agent_directory / "agent.py"
                 root_agent_yaml = (
-                    generated_project_dir / agent_directory / "root_agent.yaml"
+                    generated_project_dir / agent_directory / "research_agent.yaml"
                 )
 
                 if is_adk:
@@ -1365,12 +1365,12 @@ def process_template(
 
             # Handle YAML config agents for in-folder mode
             # This runs after all files have been copied to the final destination
-            # Use force=True because the user's root_agent.yaml takes precedence
+            # Use force=True because the user's research_agent.yaml takes precedence
             # over the base template's agent.py
             if in_folder:
                 final_agent_py_path = final_destination / agent_directory / "agent.py"
                 final_root_agent_yaml = (
-                    final_destination / agent_directory / "root_agent.yaml"
+                    final_destination / agent_directory / "research_agent.yaml"
                 )
                 if final_root_agent_yaml.exists():
                     _generate_yaml_agent_shim(

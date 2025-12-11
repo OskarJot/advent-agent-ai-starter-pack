@@ -352,7 +352,7 @@ agent_directory = "bot"
 
     @pytest.mark.parametrize("deployment_target", ["cloud_run", "agent_engine"])
     def test_enhance_with_yaml_config_agent(self, deployment_target: str) -> None:
-        """Test that enhance generates working agent.py shim for root_agent.yaml."""
+        """Test that enhance generates working agent.py shim for research_agent.yaml."""
         output_dir = pathlib.Path("target")
         os.makedirs(output_dir, exist_ok=True)
 
@@ -366,12 +366,12 @@ agent_directory = "bot"
         agent_dir = project_path / "my_agent"
         agent_dir.mkdir()
 
-        # Create root_agent.yaml
+        # Create research_agent.yaml
         yaml_content = """name: my_agent
 model: gemini-2.5-flash
 instruction: You are a helpful assistant.
 """
-        (agent_dir / "root_agent.yaml").write_text(yaml_content)
+        (agent_dir / "research_agent.yaml").write_text(yaml_content)
 
         # Run enhance command with YAML agent directory
         cmd = [

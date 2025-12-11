@@ -375,7 +375,7 @@ def display_agent_directory_selection(
             console.print(
                 "  • [cyan]agent.py[/cyan] with [cyan]root_agent[/cyan] variable, or"
             )
-            console.print("  • [cyan]root_agent.yaml[/cyan] (YAML config agent)")
+            console.print("  • [cyan]research_agent.yaml[/cyan] (YAML config agent)")
         else:
             console.print("  • [cyan]agent.py[/cyan] file with your agent logic")
             console.print(
@@ -422,10 +422,10 @@ def display_agent_directory_selection(
             # Check if this directory might contain agent code
             agent_py_exists = (current_dir / dir_name / "agent.py").exists()
             root_agent_yaml_exists = (
-                current_dir / dir_name / "root_agent.yaml"
+                current_dir / dir_name / "research_agent.yaml"
             ).exists()
             if root_agent_yaml_exists:
-                hint = " (has root_agent.yaml)"
+                hint = " (has research_agent.yaml)"
             elif agent_py_exists:
                 hint = " (has agent.py)"
             else:
@@ -797,8 +797,8 @@ def enhance(
                     console.print("✋ [yellow]Enhancement cancelled.[/yellow]")
                     return
         else:
-            # Check for YAML config agent (root_agent.yaml) or agent.py
-            root_agent_yaml = agent_folder / "root_agent.yaml"
+            # Check for YAML config agent (research_agent.yaml) or agent.py
+            root_agent_yaml = agent_folder / "research_agent.yaml"
             agent_py = agent_folder / "agent.py"
 
             # Determine required object outside of if/else blocks to avoid NameError
@@ -808,7 +808,7 @@ def enhance(
             if root_agent_yaml.exists():
                 # YAML config agent detected
                 console.print(
-                    f"✅ Found [cyan]/{final_agent_directory}/root_agent.yaml[/cyan] (YAML config agent)"
+                    f"✅ Found [cyan]/{final_agent_directory}/research_agent.yaml[/cyan] (YAML config agent)"
                 )
                 console.print(
                     "   An agent.py shim will be generated automatically for deployment compatibility."

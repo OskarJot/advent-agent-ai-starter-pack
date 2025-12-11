@@ -206,7 +206,7 @@ ADK allows you to define agents, tools, and even multi-agent workflows using a s
 
 ```python
 from google.adk.agents import config_agent_utils
-root_agent = config_agent_utils.from_config("{agent_folder}/root_agent.yaml")
+root_agent = config_agent_utils.from_config("{agent_folder}/research_agent.yaml")
 ```
 
 #### **Running Agent Config Agents**
